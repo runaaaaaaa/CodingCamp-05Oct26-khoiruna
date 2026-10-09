@@ -1,0 +1,548 @@
+/* ==========================================================
+   style.css — Personal Dashboard
+   Visual: white cards on purple/indigo gradient background
+   ========================================================== */
+
+/* ── 1. Theme variables ── */
+:root {
+  --bg-grad-from:  #7c6fc4;
+  --bg-grad-to:    #9b5fc0;
+  --card-bg:       linear-gradient(145deg, #ffffff 0%, #fdf0ff 50%, #e8f8ff 100%);
+  --card-border:   rgba(255, 255, 255, 0.6);
+  --card-shadow:   0 4px 24px rgba(0, 0, 0, 0.13);
+
+  --text:          #1a1d23;
+  --text-muted:    #6b7280;
+  --text-light:    #9ca3af;
+
+  --clock-color:   #ffb3d9;   /* pink clock digits (light mode) */
+  --body-bg:       linear-gradient(135deg, #FFDEE9 0%, #B5FFFC 50%, #85FFFC 100%);
+  --greeting-color:#1a1d23;
+
+  --blue:          #d5b3ff;
+  --blue-h:        #c49aff;
+  --grey-btn:      #e5e7eb;
+  --grey-btn-h:    #d1d3d8;
+  --danger:        #ef4444;
+  --danger-h:      #dc2626;
+  --success:       #22c55e;
+
+  --input-bg:      #f9fafb;
+  --input-border:  #d1d5db;
+  --input-focus:   #5b6dee;
+
+  --radius-card:   14px;
+  --radius-btn:    8px;
+  --radius-input:  8px;
+  --transition:    0.18s ease;
+}
+
+[data-theme="dark"] {
+  --bg-grad-from:  #1e1b4b;
+  --bg-grad-to:    #312e81;
+  --card-bg:       linear-gradient(145deg, #2C2C2C 0%, #332840 55%, #1e2e30 100%);
+  --card-border:   rgba(255,255,255,0.08);
+  --card-shadow:   0 4px 24px rgba(0,0,0,0.4);
+
+  --text:          #E4E4E4;
+  --text-muted:    #A8DADC;
+  --text-light:    #9ca3af;
+
+  --clock-color:   #FFC1CC;   /* warm pink from palette */
+  --body-bg:       linear-gradient(135deg, #1a1035 0%, #2d1b4e 50%, #1a2744 100%);
+  --greeting-color:#E4E4E4;
+
+  --blue:          #B39CD0;   /* soft purple from palette */
+  --blue-h:        #9f87c0;
+  --grey-btn:      #3a3a3a;
+  --grey-btn-h:    #484848;
+
+  --input-bg:      #2C2C2C;
+  --input-border:  #3d3d3d;
+  --input-focus:   #A8DADC;
+
+  --danger:        #FFC1CC;
+  --danger-h:      #ffaabb;
+}
+
+/* ── 2. Reset & base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 16px; scroll-behavior: smooth; }
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+  background: var(--body-bg);
+  background-attachment: fixed;
+  color: var(--text);
+  line-height: 1.5;
+  transition: background var(--transition), color var(--transition);
+}
+
+/* ── 3. Theme toggle (floating top-right) ── */
+.theme-toggle {
+  position: fixed;
+  top: 16px;
+  right: 20px;
+  z-index: 200;
+  background: rgba(255,255,255,0.25);
+  border: 1px solid rgba(255,255,255,0.4);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 1.15rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(6px);
+  transition: background var(--transition), transform 0.15s;
+}
+.theme-toggle:hover { background: rgba(255,255,255,0.4); transform: scale(1.08); }
+
+/* ── 4. Dashboard layout ── */
+.dashboard {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 36px 20px 52px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Two-column row for timer + tasks */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* ── 5. Cards ── */
+.card {
+  background: var(--card-bg);
+  background-attachment: local;
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--card-shadow);
+  padding: 28px 28px 24px;
+  transition: background var(--transition), border-color var(--transition);
+}
+
+.card-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+
+/* ── 6. Greeting card ── */
+.card--greeting {
+  text-align: center;
+  padding: 32px 28px 28px;
+}
+
+.clock {
+  font-size: clamp(2.6rem, 7vw, 4rem);
+  font-weight: 700;
+  color: var(--clock-color);
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+
+.date-display {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin-top: 6px;
+  margin-bottom: 12px;
+}
+
+.greeting-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+}
+
+.greeting {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--greeting-color);
+}
+
+.btn-icon-sm {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+  opacity: 0.55;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: opacity var(--transition);
+}
+.btn-icon-sm:hover { opacity: 1; }
+
+.name-editor {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.input--inline { max-width: 220px; }
+
+/* ── 7. Timer card ── */
+.card--timer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.timer-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.timer-display {
+  font-size: clamp(2.4rem, 6vw, 3.8rem);
+  font-weight: 700;
+  color: var(--clock-color);
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+  padding: 8px 0 16px;
+  transition: color var(--transition);
+}
+.timer-display.running  { color: var(--success); }
+.timer-display.finished { color: var(--danger); }
+
+.timer-btns {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* ── 8. Tasks card ── */
+.tasks-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.tasks-header .card-title { margin-bottom: 0; }
+
+.task-input-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.task-input-row .input { flex: 1; }
+
+.task-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 4px;
+  border-bottom: 1px solid #f0f0f0;
+  animation: fadeIn 0.15s ease;
+}
+[data-theme="dark"] .task-item { border-bottom-color: #2d3148; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.task-item.done { opacity: 0.5; }
+
+.task-checkbox {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  accent-color: var(--blue);
+  cursor: pointer;
+}
+
+.task-text {
+  flex: 1;
+  font-size: 0.9rem;
+  word-break: break-word;
+}
+.task-item.done .task-text {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+.task-edit-input {
+  flex: 1;
+  font-size: 0.9rem;
+  border: 1px solid var(--blue);
+  border-radius: 6px;
+  padding: 2px 8px;
+  background: var(--input-bg);
+  color: var(--text);
+  outline: none;
+  font-family: inherit;
+}
+
+.task-actions {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+/* ── 9. Quick Links card ── */
+.card--links {}
+
+.links-input-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.links-input-row .input { flex: 1; min-width: 110px; }
+
+.links-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* Link button chips — styled like the blue rounded buttons in the image */
+.link-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--blue);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-btn);
+  padding: 8px 14px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background var(--transition), transform 0.1s;
+}
+.link-chip:hover { background: var(--blue-h); transform: translateY(-1px); }
+
+.link-chip a {
+  color: #fff;
+  text-decoration: none;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.link-remove {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: rgba(255,255,255,0.75);
+  font-size: 0.75rem;
+  padding: 0;
+  line-height: 1;
+  transition: color var(--transition);
+}
+.link-remove:hover { color: #fff; }
+
+.link-favicon {
+  width: 14px;
+  height: 14px;
+  border-radius: 2px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+/* ── 10. Shared form elements ── */
+.input {
+  padding: 8px 12px;
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-input);
+  background: var(--input-bg);
+  color: var(--text);
+  font-size: 0.875rem;
+  font-family: inherit;
+  width: 100%;
+  outline: none;
+  transition: border-color var(--transition), background var(--transition);
+}
+.input:focus { border-color: var(--input-focus); background: var(--input-bg); }
+
+.meta-label {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.select-sm {
+  padding: 4px 8px;
+  border: 1px solid var(--input-border);
+  border-radius: 6px;
+  background: var(--input-bg);
+  color: var(--text);
+  font-size: 0.8rem;
+  font-family: inherit;
+  cursor: pointer;
+  outline: none;
+}
+
+.sort-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ── 11. Buttons ── */
+.btn {
+  padding: 8px 18px;
+  border: none;
+  border-radius: var(--radius-btn);
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-family: inherit;
+  font-weight: 600;
+  white-space: nowrap;
+  outline: none;
+  transition: background var(--transition), transform 0.1s, opacity var(--transition);
+}
+.btn:active  { transform: scale(0.96); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+/* Blue primary (matches image buttons) */
+.btn--blue {
+  background: var(--blue);
+  color: #fff;
+}
+.btn--blue:hover:not(:disabled) { background: var(--blue-h); }
+
+/* Grey secondary */
+.btn--grey {
+  background: var(--grey-btn);
+  color: var(--text);
+}
+.btn--grey:hover:not(:disabled) { background: var(--grey-btn-h); }
+
+/* Outline */
+.btn--outline {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--input-border);
+}
+.btn--outline:hover:not(:disabled) { background: var(--grey-btn); }
+
+/* Red delete button (matches image) */
+.btn--delete {
+  background: var(--danger);
+  color: #fff;
+  padding: 5px 12px;
+  font-size: 0.8rem;
+  border-radius: 6px;
+}
+.btn--delete:hover { background: var(--danger-h); }
+
+/* Ghost edit */
+.btn--edit {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  padding: 4px 6px;
+  border-radius: 6px;
+  transition: background var(--transition), color var(--transition);
+}
+.btn--edit:hover { background: var(--grey-btn); color: var(--blue); }
+
+/* ── 12. Utilities ── */
+.hidden { display: none !important; }
+
+.empty-msg {
+  font-size: 0.82rem;
+  color: var(--text-light);
+  text-align: center;
+  padding: 10px 0 2px;
+  font-style: italic;
+}
+
+/* ── 13. Responsive ── */
+
+/* Tablet (641px – 860px): shrink padding, keep two columns */
+@media (min-width: 641px) and (max-width: 860px) {
+  .dashboard { padding: 24px 16px 44px; }
+
+  .card { padding: 22px 20px 18px; }
+
+  .clock { font-size: clamp(2rem, 8vw, 3rem); }
+
+  .timer-display { font-size: clamp(2rem, 8vw, 3rem); }
+}
+
+/* Mobile (≤ 640px): single column, larger touch targets */
+@media (max-width: 640px) {
+  /* Extra top padding so the floating toggle doesn't overlap the first card */
+  .dashboard { padding: 64px 12px 40px; gap: 14px; }
+
+  /* Single column everywhere */
+  .two-col { grid-template-columns: 1fr; }
+
+  /* Cards: less side padding on small screens */
+  .card { padding: 20px 16px 18px; }
+
+  /* Greeting card */
+  .card--greeting { padding: 24px 16px 20px; }
+  .clock { font-size: clamp(2.2rem, 13vw, 3rem); }
+  .greeting { font-size: 1.2rem; }
+
+  /* Timer */
+  .card--timer { padding: 20px 16px; }
+  .timer-display { font-size: clamp(2.6rem, 15vw, 3.5rem); }
+  .timer-btns { gap: 8px; }
+  .timer-btns .btn { flex: 1; padding: 10px 8px; font-size: 0.85rem; }
+
+  /* Tasks */
+  .task-input-row { flex-direction: row; gap: 6px; }
+  .task-input-row .btn { flex-shrink: 0; padding: 8px 14px; }
+
+  /* Bigger touch targets on task rows */
+  .task-item { padding: 10px 4px; }
+  .task-checkbox { width: 20px; height: 20px; }
+  .btn--delete { padding: 7px 12px; }
+
+  /* Links */
+  .links-input-row { flex-direction: column; }
+  .links-input-row .btn { width: 100%; }
+
+  /* Sort row wraps nicely */
+  .tasks-header { flex-direction: row; align-items: center; }
+
+  /* Move theme toggle to avoid overlap with content */
+  .theme-toggle { top: 12px; right: 12px; width: 36px; height: 36px; font-size: 1rem; }
+
+  /* Name editor stacks vertically */
+  .name-editor { flex-direction: column; align-items: stretch; }
+  .name-editor .btn { width: 100%; }
+  .input--inline { max-width: 100%; }
+}
+
+/* Very small screens (≤ 360px) */
+@media (max-width: 360px) {
+  .clock { font-size: 2rem; }
+  .timer-display { font-size: 2.4rem; }
+  .btn { font-size: 0.8rem; padding: 8px 10px; }
+}

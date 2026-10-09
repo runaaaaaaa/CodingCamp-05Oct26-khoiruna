@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>To-Do List Life Dashboard</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ── Dark mode toggle (top-right corner) ── -->
+  <button id="theme-toggle" class="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode">🌙</button>
+
+  <main class="dashboard">
+
+    <!-- ── GREETING CARD (full width) ── -->
+    <section class="card card--greeting">
+      <div id="clock" class="clock">00:00:00</div>
+      <div id="date-display" class="date-display">Monday, January 1, 2026</div>
+
+      <!-- Name row -->
+      <div class="greeting-row">
+        <h1 id="greeting" class="greeting">Good Morning</h1>
+        <button id="edit-name-btn" class="btn-icon-sm" title="Edit name" aria-label="Edit name">✏️</button>
+      </div>
+
+      <!-- Inline name editor (hidden by default) -->
+      <div id="name-editor" class="name-editor hidden">
+        <input id="name-input" type="text" class="input input--inline"
+               placeholder="Enter your name…" maxlength="40" aria-label="Your name" />
+        <button id="save-name-btn" class="btn btn--blue">Save</button>
+        <button id="cancel-name-btn" class="btn btn--outline">Cancel</button>
+      </div>
+    </section>
+
+    <!-- ── TWO-COLUMN ROW: Timer + Tasks ── -->
+    <div class="two-col">
+
+      <!-- FOCUS TIMER -->
+      <section class="card card--timer">
+        <h2 class="card-title">Focus Timer</h2>
+
+        <!-- Duration selector -->
+        <div class="timer-meta">
+          <label for="pomodoro-duration" class="meta-label">Duration:</label>
+          <select id="pomodoro-duration" class="select-sm" aria-label="Select duration">
+            <option value="15">15 min</option>
+            <option value="20">20 min</option>
+            <option value="25" selected>25 min</option>
+            <option value="30">30 min</option>
+            <option value="45">45 min</option>
+            <option value="60">60 min</option>
+          </select>
+        </div>
+
+        <div id="timer-display" class="timer-display">25:00</div>
+
+        <div class="timer-btns">
+          <button id="timer-start" class="btn btn--blue">Start</button>
+          <button id="timer-stop"  class="btn btn--grey" disabled>Stop</button>
+          <button id="timer-reset" class="btn btn--grey">Reset</button>
+        </div>
+      </section>
+
+      <!-- TASKS -->
+      <section class="card card--tasks">
+        <!-- Header row with sort -->
+        <div class="tasks-header">
+          <h2 class="card-title">Tasks</h2>
+          <div class="sort-row">
+            <label for="sort-select" class="meta-label">Sort:</label>
+            <select id="sort-select" class="select-sm" aria-label="Sort tasks">
+              <option value="default">Default</option>
+              <option value="az">A → Z</option>
+              <option value="za">Z → A</option>
+              <option value="done">Done last</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Add task row -->
+        <div class="task-input-row">
+          <input id="task-input" type="text" class="input"
+                 placeholder="Add a new task…" maxlength="120"
+                 autocomplete="off" aria-label="New task" />
+          <button id="add-task-btn" class="btn btn--blue">Add</button>
+        </div>
+
+        <ul id="task-list" class="task-list" aria-label="Task list"></ul>
+        <p id="task-empty" class="empty-msg">No tasks yet. Add one above!</p>
+      </section>
+
+    </div><!-- /.two-col -->
+
+    <!-- ── QUICK LINKS (full width) ── -->
+    <section class="card card--links">
+      <h2 class="card-title">Quick Links</h2>
+
+      <div class="links-input-row">
+        <input id="link-name" type="text" class="input"
+               placeholder="Link name" maxlength="30"
+               autocomplete="off" aria-label="Link name" />
+        <input id="link-url" type="url" class="input"
+               placeholder="URL" autocomplete="off" aria-label="Link URL" />
+        <button id="add-link-btn" class="btn btn--blue">Add Link</button>
+      </div>
+
+      <div id="links-grid" class="links-grid" aria-label="Saved links"></div>
+      <p id="links-empty" class="empty-msg">No links yet. Add your favourites!</p>
+    </section>
+
+  </main>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
